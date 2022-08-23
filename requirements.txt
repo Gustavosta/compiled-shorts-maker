@@ -1,0 +1,4 @@
+moviepy
+praw
+pysqlite3
+requests
