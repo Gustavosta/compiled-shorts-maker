@@ -1,7 +1,15 @@
+#!/usr/bin/env python3
+#-*- coding:utf -8-*-
+
 from moviepy.editor import VideoFileClip, concatenate_videoclips
 from .reddit_scraper import download_reddit
 
-import time, random, string, os
+import random, string, logging
+
+
+r = '\033[31m'
+e = '\033[0m'
+y = '\033[33m'
 
 
 def short_maker(path_out, urls, resolution = (720, 1280)):
@@ -10,10 +18,8 @@ def short_maker(path_out, urls, resolution = (720, 1280)):
     urls_used = []
     
     for url in urls:
-        print(url)
         path_vid = 'content/videos/' + ''.join(random.choices(string.ascii_lowercase + string.digits, k=10))
         download_reddit(url.replace('\n', ''), path_vid)
-        time.sleep(1)
         
         try:
             video = VideoFileClip(path_vid+'.mp4')
@@ -21,14 +27,13 @@ def short_maker(path_out, urls, resolution = (720, 1280)):
             if duration <= 60:
                 urls_used.append(url)
                 vids.append(video.resize(width = resolution[0]).set_pos('center'))
-                
             else:
-                print('\nSome videos could not be included as they exceed 60 seconds of video!\n')
+                logging.warning(f'\n{y}[ ! ]Some videos could not be included as they exceed 60 seconds of video!{e}\n')
                 break
-            
         except: pass
     
     compose = concatenate_videoclips(vids, method='compose').resize(resolution).set_pos('center')
     compose.write_videofile(path_out, fps=30, threads=80, codec="libx264")
 
-    return urls_used
+
+

@@ -134,6 +134,11 @@ teste*
 test*
 /content
 /output
-config*
+config.py
+client_*
+credentials*
+*.txt
+*.db
+
 
 

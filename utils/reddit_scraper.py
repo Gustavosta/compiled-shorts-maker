@@ -1,8 +1,16 @@
+#!/usr/bin/env python3
+#-*- coding:utf -8-*-
+
 from .database import Database
 from config import Config
 from moviepy.editor import VideoFileClip, concatenate_videoclips, AudioFileClip
 
-import praw, random, requests, os
+import praw, random, requests, os, logging
+
+
+r = '\033[31m'
+e = '\033[0m'
+y = '\033[33m'
 
 
 def reddit_scrapper(subreddit, limit=100):
@@ -16,7 +24,7 @@ def reddit_scrapper(subreddit, limit=100):
             media = post.media
             if cur.search(id=str(post.id)) == []:
                 if media is not None:
-                    if media['reddit_video']['is_gif'] == False and media['reddit_video']['duration'] < 20:
+                    if media['reddit_video']['is_gif'] == False and media['reddit_video']['duration'] < Config.MAX_DURATION_PER_VIDEO:
                         duration += media['reddit_video']['duration']
                         if duration <= 60:
                             url = post.media['reddit_video']['fallback_url']
@@ -26,6 +34,8 @@ def reddit_scrapper(subreddit, limit=100):
                             break
                     
         except KeyError: pass
+    
+    logging.info(f'\n{y}[ + ]{e} Found {len(urls)} videos\n')
 
     return urls
 
@@ -47,21 +57,16 @@ def download_file(url, path):
 def download_reddit(url, path):
     download_file(url, path+'_temp.mp4')
     download_file(url.split('DASH')[0]+'DASH_audio.mp4', path+'.mp3')
-    # Unir audio e vídeo no moviepy
-    audio = AudioFileClip(path+'.mp3')
-    video = VideoFileClip(path+'_temp.mp4')
-    if audio:
+    
+    try:
+        video = VideoFileClip(path+'_temp.mp4')
+        audio = AudioFileClip(path+'.mp3')
         compose = concatenate_videoclips([video.set_audio(audio)])
         compose.write_videofile(path+'.mp4', fps=30, codec="libx264")
-        os.remove(path+'_temp.mp4')
-        os.remove(path+'.mp3')
-    else:
+        
+    except:
+        video = VideoFileClip(path+'_temp.mp4')
         compose = concatenate_videoclips([video])
         compose.write_videofile(path+'.mp4', fps=30, codec="libx264")
-        os.remove(path+'_temp.mp4')
-
+        
     return path+'.mp4'
-    
-
-
-

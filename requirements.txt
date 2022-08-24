@@ -2,3 +2,8 @@ moviepy
 praw
 pysqlite3
 requests
+simple_youtube_api
+schedule
+
+
+
