@@ -4,7 +4,7 @@
 from moviepy.editor import VideoFileClip, concatenate_videoclips
 from .reddit_scraper import download_reddit
 
-import random, string, logging
+import random, string
 
 
 r = '\033[31m'
@@ -28,7 +28,7 @@ def short_maker(path_out, urls, resolution = (720, 1280)):
                 urls_used.append(url)
                 vids.append(video.resize(width = resolution[0]).set_pos('center'))
             else:
-                logging.warning(f'\n{y}[ ! ]Some videos could not be included as they exceed 60 seconds of video!{e}\n')
+                print(f'\n{y}[ ! ]Some videos could not be included as they exceed 60 seconds of video!{e}\n')
                 break
         except: pass
     

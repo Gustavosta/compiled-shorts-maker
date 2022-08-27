@@ -5,7 +5,7 @@ from .database import Database
 from config import Config
 from moviepy.editor import VideoFileClip, concatenate_videoclips, AudioFileClip
 
-import praw, random, requests, os, logging
+import praw, random, requests
 
 
 r = '\033[31m'
@@ -35,7 +35,7 @@ def reddit_scrapper(subreddit, limit=100):
                     
         except KeyError: pass
     
-    logging.info(f'\n{y}[ + ]{e} Found {len(urls)} videos\n')
+    print(f'\n{y}[ + ]{e} Found {len(urls)} videos\n')
 
     return urls
 

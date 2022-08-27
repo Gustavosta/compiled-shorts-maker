@@ -139,6 +139,6 @@ client_*
 credentials*
 *.txt
 *.db
-
+*.json
 
 

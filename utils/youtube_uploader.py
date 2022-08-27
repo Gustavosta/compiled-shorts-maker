@@ -5,7 +5,7 @@ from simple_youtube_api.Channel import Channel
 from simple_youtube_api.LocalVideo import LocalVideo
 from config import Config
 
-import os, logging
+import os
 
 
 r = '\033[31m'
@@ -18,7 +18,7 @@ def youtube_uploader(video_path, title, description, category, privacy_status, t
     credentials_path = 'content/credentials.storage'
     channel.login(Config.GOOGLE_CLIENT_SECRET_PATH , credentials_path)
     if not os.path.exists(video_path):
-        logging.error(f"\n{r}[ ! ] Video not found\n{e}")
+        print(f"\n{r}[ ! ] Video not found\n{e}")
 
     elif os.path.isfile(Config.GOOGLE_CLIENT_SECRET_PATH) and os.path.isfile(credentials_path):
         video = LocalVideo(file_path=video_path)
@@ -34,6 +34,6 @@ def youtube_uploader(video_path, title, description, category, privacy_status, t
         video = channel.upload_video(video)
         return video.id
     else:
-        logging.error(f"\n{r}[ ! ] Client secret and credentials not found\n{e}")
+        print(f"\n{r}[ ! ] Client secret and credentials not found\n{e}")
 
 

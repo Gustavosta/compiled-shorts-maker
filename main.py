@@ -5,10 +5,11 @@ from config import Config
 from utils.reddit_scraper import reddit_scrapper
 from utils.short_maker import short_maker
 from utils.youtube_uploader import youtube_uploader
+from utils.utils import *
 
 from datetime import datetime
 
-import random, string, os, schedule, logging
+import random, string, os, schedule
 
 
 r = '\033[31m'
@@ -34,7 +35,7 @@ def post_shorts():
     date = datetime.now().strftime('%m/%d/%Y')
     count = len(os.listdir('output'))+1
     
-    logging.info(f'\n{y}[ + ] Creating short...{e}\n')
+    print(f'\n{y}[ + ] Creating short...{e}\n')
     urls = []
     for subreddit in random.choices(Config.SUBREDDIT_LIST, k=len(Config.SUBREDDIT_LIST)):
         urls = reddit_scrapper(subreddit, limit=500)
@@ -42,14 +43,16 @@ def post_shorts():
             break
         
     if not len(urls) == 0:
+        platform = 'youtube'
         filename = 'shorts_'+''.join(random.choices(string.ascii_lowercase + string.digits, k=5))+'.mp4'
         short_maker('output/'+filename, urls, resolution=(720, 1280))
-        id = youtube_uploader('output/'+filename, Config.YOUTUBE_TITLE.format(**locals()), Config.YOUTUBE_TITLE.format(**locals()), Config.YOUTUBE_CATEGORY, 'public', Config.YOUTUBE_TAGS)
+        tags = get_suggest_tags(Config.YOUTUBE_CATEGORY, platform)
+        id = youtube_uploader('output/'+filename, Config.YOUTUBE_TITLE.format(**locals()), Config.YOUTUBE_TITLE.format(**locals()), Config.YOUTUBE_CATEGORY, 'public', tags)
         clear_dir('content/videos/')
-        logging.info(f'\n{y}[ + ] Short created and uploaded:{e} http://youtu.be/{id}\n')
+        print(f'\n{y}[ + ] Short created and uploaded:{e} http://youtu.be/{id}\n')
 
     else:
-        logging.error(f'\n{r}[ ! ] No posts were found on Reddit{e}\n')
+        print(f'\n{r}[ ! ] No posts were found on Reddit{e}\n')
 
 
 if __name__ == '__main__':
