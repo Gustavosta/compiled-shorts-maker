@@ -140,5 +140,5 @@ credentials*
 *.txt
 *.db
 *.json
-
-
+settings.toml
+tmp/

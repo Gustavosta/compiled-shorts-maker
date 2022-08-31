@@ -17,12 +17,12 @@ class Database:
     def __init__(self):
         self.conn = sqlite3.connect(Config.DATABASE_PATH)
         self.cur = self.conn.cursor()
-        self.cur.execute("CREATE TABLE IF NOT EXISTS posts (id TEXT, url TEXT, added_date FLOAT)")
+        self.cur.execute("CREATE TABLE IF NOT EXISTS posts (id TEXT, url TEXT, added_date FLOAT, platform TEXT)")
         self.conn.commit()
 
-    def insert(self, id, url):
+    def insert(self, id:str, url:str, platform:str):
         if self.search(id=id) == []:
-            self.cur.execute("INSERT INTO posts VALUES (?, ?, ?)", (id, url, time.time()))
+            self.cur.execute("INSERT INTO posts VALUES (?, ?, ?, ?)", (id, url, time.time(), platform))
             self.conn.commit()
 
     def view(self):
@@ -30,16 +30,16 @@ class Database:
         rows = self.cur.fetchall()
         return rows
 
-    def search(self, id='', url=''):
-        self.cur.execute("SELECT * FROM posts WHERE url=? OR id=?", (url, id))
+    def search(self, id:str='', url:str='', platform:str=''):
+        self.cur.execute("SELECT * FROM posts WHERE url=? OR id=? OR platform=?", (url, id, platform))
         rows = self.cur.fetchall()
         return rows
 
-    def delete(self, id):
+    def delete(self, id:str):
         self.cur.execute("DELETE FROM posts WHERE id=?", (id))
         self.conn.commit()
 
-    def update(self, id, url):
+    def update(self, id:str, url:str):
         self.cur.execute("UPDATE posts SET url=? WHERE id=?", (url, id))
         self.conn.commit()
 

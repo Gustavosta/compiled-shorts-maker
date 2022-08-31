@@ -2,7 +2,7 @@
 #-*- coding:utf -8-*-
 
 from moviepy.editor import VideoFileClip, concatenate_videoclips
-from .reddit_scraper import download_reddit
+from .downloader import reddit_downloader, tiktok_downloader, instagram_downloader
 
 import random, string
 
@@ -12,14 +12,19 @@ e = '\033[0m'
 y = '\033[33m'
 
 
-def short_maker(path_out, urls, resolution = (720, 1280)):
+def short_maker(path_out:str, urls:list, resolution:tuple = (720, 1280)):
     vids = []
     duration = 0
     urls_used = []
     
     for url in urls:
         path_vid = 'content/videos/' + ''.join(random.choices(string.ascii_lowercase + string.digits, k=10))
-        download_reddit(url.replace('\n', ''), path_vid)
+        if 'reddit' in url or 'redd.it' in url:
+            reddit_downloader(url.replace('\n', ''), path_vid)
+        elif 'tiktok' in url:
+            tiktok_downloader(url.replace('\n', ''), path_vid)
+        elif 'instagram' in url:
+            instagram_downloader(url.replace('\n', ''), path_vid)
         
         try:
             video = VideoFileClip(path_vid+'.mp4')
