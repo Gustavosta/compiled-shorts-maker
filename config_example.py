@@ -2,18 +2,33 @@
 #-*- coding:utf -8-*-
 
 class Config:
-    REDDIT_CLIENT_ID = ''
-    REDDIT_CLIENT_SECRET = ''
-    REDDIT_USER_AGENT = ''
-    
-    SUBREDDIT_LIST = ['cellbits']
+    SCHEDULED_POSTING_TIMES = []
     DATABASE_PATH = 'content/database.db'
+    
+    SCRAPER_REDDIT_CLIENT_ID = ''
+    SCRAPER_REDDIT_CLIENT_SECRET = ''
+    SCRAPER_REDDIT_USER_AGENT = ''
+    SCRAPER_REDDIT_SUBREDDIT_LIST = ['memes']
+    MAX_DURATION_PER_REDDIT_VIDEO = 20
+    
+    SCRAPER_INSTAGRAM_USERNAME = ''
+    SCRAPER_INSTAGRAM_PASSWORD = ''
+    SCRAPER_INSTAGRAM_HASHTAG_LIST = ['memes']
+    MAX_DURATION_PER_INSTAGRAM_VIDEO = 20
+    
+    SCRAPER_TIKTOK_HASHTAGS = ['memes']
+    MAX_DURATION_PER_TIKTOK_VIDEO = 30
+    
     GOOGLE_CLIENT_SECRET_PATH = 'client_secret.json'
+    
+    INSTAGRAM_USERNAME = ''
+    INSTAGRAM_PASSWORD = ''
 
-    YOUTUBE_CATEGORY = 'comedy'
-    YOUTUBE_TITLE = 'Memes I Found #{count} #shorts'
-    YOUTUBE_DESCRIPTION = '⚠ no one was harmed in any of these memes theses are made for entertainment purposes only. enjoy! #shorts #memes'
-    YOUTUBE_TAGS = []
-    YOUTUBE_LANGUAGE = "en-US"
+    POST_CATEGORY = 'comedy'
+    POST_TITLE = 'Memes I Found #{count} #shorts'
+    POST_DESCRIPTION = '#shorts #memes'
+    POST_ADDITIONAL_TAGS = []
+    POST_LANGUAGE = "en-US"
 
-    MAX_DURATION_PER_VIDEO = 15
+
+
